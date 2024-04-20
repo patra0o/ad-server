@@ -35,20 +35,19 @@
         document.addEventListener('DOMContentLoaded', function () {
             const adBanner = document.getElementById('ad-banner');
             const adId = 150; // Retrieve the adId
-            const site = 'https://8b7aa341-4416-4671-b9bc-03c0e393c6c8-00-1r6zz1ux729b8.janeway.replit.dev';
+            //const site = 'https://8b7aa341-4416-4671-b9bc-03c0e393c6c8-00-1r6zz1ux729b8.janeway.replit.dev';
             // or set to localhost 
-            //const site = 'http://localhost';
+            const site = 'http://localhost';
             // Function to send data to the API
             function sendDataToAPI(eventType, additionalData) {
                 fetch(`${site}:3000/ad-event`, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         eventType,
-                        adId, // Include the adId in the data sent
+                        adId, // Include the adId in the data sent to be made dynamic
                         ...additionalData,
                         timestamp: new Date().toISOString(),
                     }),
@@ -66,9 +65,29 @@
                 };
             }
 
+            function getLocationAndSend(eventType) {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(position => {
+                        const locationData = {
+                            lat: position.coords.latitude,
+                            lon: position.coords.longitude
+                        };
+                        sendDataToAPI(eventType, locationData);
+                    }, error => {
+                        console.error('Error obtaining location:', error);
+                        sendDataToAPI(eventType, { error: 'Location permission denied or unavailable' });
+                    });
+                } else {
+                    console.log('Geolocation is not supported by this browser.');
+                    sendDataToAPI(eventType, { error: 'Geolocation not supported' });
+                }
+            }
+
             // Event handlers
             adBanner.addEventListener('mouseover', () => sendDataToAPI('hover', collectClientData()));
             adBanner.addEventListener('click', () => sendDataToAPI('click', collectClientData()));
+            adBanner.addEventListener('mouseover', () => getLocationAndSend('hover'));
+            adBanner.addEventListener('click', () => getLocationAndSend('click'));
 
             // Visibility tracking for 'view' events
             const observer = new IntersectionObserver((entries) => {
