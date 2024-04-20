@@ -42,6 +42,7 @@
             function sendDataToAPI(eventType, additionalData) {
                 fetch(`${site}:3000/ad-event`, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json',
                     },
