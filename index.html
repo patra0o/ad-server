@@ -60,14 +60,15 @@
             function collectClientData() {
                 return {
                     location: window.location.href,
-                    device: navigator.userAgent,
+                    device: window.navigator.platform,
+                    browser: navigator.userAgent,
                     screenSize: `${window.innerWidth} x ${window.innerHeight}`,
                 };
             }
 
 
             // Event handlers
-            adBanner.addEventListener('mouseover', () => sendDataToAPI('hover', collectClientData()));
+            //  adBanner.addEventListener('mouseover', () => sendDataToAPI('hover', collectClientData()));
             adBanner.addEventListener('click', () => sendDataToAPI('click', collectClientData()));
 
             // Visibility tracking for 'view' events
