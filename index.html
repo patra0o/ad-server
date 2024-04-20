@@ -34,10 +34,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const adBanner = document.getElementById('ad-banner');
-            const adId = adBanner.getAttribute('data-ad-id'); // Retrieve the adId
-            // const site = 'https://8b7aa341-4416-4671-b9bc-03c0e393c6c8-00-1r6zz1ux729b8.janeway.replit.dev';
+            const adId = 150; // Retrieve the adId
+            const site = 'https://8b7aa341-4416-4671-b9bc-03c0e393c6c8-00-1r6zz1ux729b8.janeway.replit.dev';
             // or set to localhost 
-            const site = 'http://localhost';
+            //const site = 'http://localhost';
             // Function to send data to the API
             function sendDataToAPI(eventType, additionalData) {
                 fetch(`${site}:3000/ad-event`, {
