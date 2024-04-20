@@ -65,29 +65,10 @@
                 };
             }
 
-            function getLocationAndSend(eventType) {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(position => {
-                        const locationData = {
-                            lat: position.coords.latitude,
-                            lon: position.coords.longitude
-                        };
-                        sendDataToAPI(eventType, locationData);
-                    }, error => {
-                        console.error('Error obtaining location:', error);
-                        sendDataToAPI(eventType, { error: 'Location permission denied or unavailable' });
-                    });
-                } else {
-                    console.log('Geolocation is not supported by this browser.');
-                    sendDataToAPI(eventType, { error: 'Geolocation not supported' });
-                }
-            }
 
             // Event handlers
             adBanner.addEventListener('mouseover', () => sendDataToAPI('hover', collectClientData()));
             adBanner.addEventListener('click', () => sendDataToAPI('click', collectClientData()));
-            adBanner.addEventListener('mouseover', () => getLocationAndSend('hover'));
-            adBanner.addEventListener('click', () => getLocationAndSend('click'));
 
             // Visibility tracking for 'view' events
             const observer = new IntersectionObserver((entries) => {
